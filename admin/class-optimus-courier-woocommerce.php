@@ -156,112 +156,155 @@ class Optimus_Courier_WooCommerce {
             wp_send_json_error('ID comandă invalid');
         }
 
-        $order = wc_get_order($order_id);
-        if (!$order) {
-            wp_send_json_error('Comanda nu a fost găsită');
-        }
-
-        // Calculate total weight from all products
-        $total_weight = 0;
-        foreach ($order->get_items() as $item) {
-            $product = $item->get_product();
-            if ($product && $product->has_weight()) {
-                $total_weight += floatval($product->get_weight()) * $item->get_quantity();
-            }
-        }
-        // Use 1kg as minimum weight if no weight is set
-        $total_weight = max(1.00, $total_weight);
-
-        // Prepare AWB data from order
-        $awb_data = array(
-            'destinatar_nume' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
-            'destinatar_contact' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
-            'destinatar_adresa' => $order->get_shipping_address_1(),
-            'destinatar_localitate' => $order->get_shipping_city(),
-            'destinatar_judet' => $order->get_shipping_state(),
-            'destinatar_cod_postal' => $order->get_shipping_postcode(),
-            'destinatar_telefon' => $order->get_shipping_phone() ?: $order->get_billing_phone(),
-            'destinatar_email' => $order->get_billing_email(),
-            'colet_buc' => apply_filters(
-                'optimus_courier_colet_buc',
-                (($settings = get_option('optimus_courier_settings', [])) && isset($settings['optimus_courier_nr_colete'])) ? $settings['optimus_courier_nr_colete'] : 1,
-                $order
-            ),
-            'colet_greutate' => $total_weight > 1.00 ? $total_weight : (float) (get_option('optimus_courier_settings')['optimus_courier_greutate'] ?? 1.00),
-            'data_colectare' => gmdate('Y-m-d'),
-            'ref_factura' => $order->get_order_number(),
-            //'ramburs_valoare' => $order->get_total()
-        );
-
-        // Create AWB using class's API instance
-        $response = $this->api->create_awb($awb_data);
-
-        if (is_wp_error($response)) {
-            $error_message = $response->get_error_message();
-            $this->log_debug('Optimus Courier AWB generation error: ' . $error_message);
+        // Check if there's an ongoing operation for this order
+        $lock_key = 'optimus_awb_lock_' . $order_id;
+        if (get_transient($lock_key)) {
             if (!isset($_POST['bulk_action'])) {
-                wp_send_json_error(array(
-                    'message' => $error_message,
-                    'type' => 'wp_error'
+                wp_send_json_error('O operație pentru această comandă este deja în curs');
+            }
+            return array('success' => false, 'message' => 'O operație pentru această comandă este deja în curs');
+        }
+
+        // Set a 30-second lock
+        set_transient($lock_key, true, 30);
+
+        try {
+            $order = wc_get_order($order_id);
+            if (!$order) {
+                wp_send_json_error('Comanda nu a fost găsită');
+            }
+
+            // Add this check at the beginning of AWB generation
+            $existing_awb = $order->get_meta('_optimus_awb_number');
+            if (!empty($existing_awb)) {
+                if (!isset($_POST['bulk_action'])) {
+                    wp_send_json_error('AWB deja generat pentru această comandă');
+                }
+                return array('success' => true, 'awb_number' => $existing_awb, 'skipped' => true);
+            }
+
+            // Calculate total weight from all products
+            $total_weight = 0;
+            foreach ($order->get_items() as $item) {
+                $product = $item->get_product();
+                if ($product && $product->has_weight()) {
+                    $total_weight += floatval($product->get_weight()) * $item->get_quantity();
+                }
+            }
+            // Use 1kg as minimum weight if no weight is set
+            $total_weight = max(1.00, $total_weight);
+
+            // Prepare AWB data from order
+            $awb_data = array(
+                'destinatar_nume' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
+                'destinatar_contact' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
+                'destinatar_adresa' => $order->get_shipping_address_1(),
+                'destinatar_localitate' => $order->get_shipping_city(),
+                'destinatar_judet' => $order->get_shipping_state(),
+                'destinatar_cod_postal' => $order->get_shipping_postcode(),
+                'destinatar_telefon' => $order->get_shipping_phone() ?: $order->get_billing_phone(),
+                'destinatar_email' => $order->get_billing_email(),
+                'colet_buc' => apply_filters(
+                    'optimus_courier_colet_buc',
+                    (($settings = get_option('optimus_courier_settings', [])) && isset($settings['optimus_courier_nr_colete'])) ? $settings['optimus_courier_nr_colete'] : 1,
+                    $order
+                ),
+                'colet_greutate' => $total_weight > 1.00 ? $total_weight : (float) (get_option('optimus_courier_settings')['optimus_courier_greutate'] ?? 1.00),
+                'data_colectare' => gmdate('Y-m-d'),
+                'ref_factura' => $order->get_order_number(),
+                //'ramburs_valoare' => $order->get_total()
+            );
+
+            // Create AWB using class's API instance
+            $response = $this->api->create_awb($awb_data);
+
+            if (is_wp_error($response)) {
+                $error_message = $response->get_error_message();
+                $this->log_debug('Optimus Courier AWB generation error: ' . $error_message);
+                if (!isset($_POST['bulk_action'])) {
+                    wp_send_json_error(array(
+                        'message' => $error_message,
+                        'type' => 'wp_error'
+                    ));
+                }
+                return array('success' => false, 'message' => $error_message, 'type' => 'wp_error');
+            }
+
+            // Check for API error
+            if (isset($response['error']) && $response['error'] !== 0) {
+                $error_message = isset($response['error_message']) ? $response['error_message'] : 'Unknown error';
+                $error_code = isset($response['error']) ? $response['error'] : 'unknown';
+                $awb_id = isset($response['id']) ? $response['id'] : null;
+                
+                $this->log_debug(sprintf(
+                    'Optimus Courier API error: Code: %s, Message: %s, AWB ID: %s',
+                    $error_code,
+                    $error_message,
+                    $awb_id ?? 'N/A'
                 ));
-            }
-            return array('success' => false, 'message' => $error_message, 'type' => 'wp_error');
-        }
 
-        // Check for API error
-        if (isset($response['error']) && $response['error'] !== 0) {
-            $error_message = isset($response['error_message']) ? $response['error_message'] : 'Unknown error';
-            $error_code = isset($response['error']) ? $response['error'] : 'unknown';
-            $awb_id = isset($response['id']) ? $response['id'] : null;
-            
-            $this->log_debug(sprintf(
-                'Optimus Courier API error: Code: %s, Message: %s, AWB ID: %s',
-                $error_code,
-                $error_message,
-                $awb_id ?? 'N/A'
-            ));
-
-            if (!isset($_POST['bulk_action'])) {
-                wp_send_json_error(array(
+                if (!isset($_POST['bulk_action'])) {
+                    wp_send_json_error(array(
+                        'message' => $error_message,
+                        'error_code' => $error_code,
+                        'awb_id' => $awb_id,
+                        'type' => 'api_error'
+                    ));
+                }
+                return array(
+                    'success' => false,
                     'message' => $error_message,
                     'error_code' => $error_code,
                     'awb_id' => $awb_id,
                     'type' => 'api_error'
-                ));
+                );
             }
-            return array(
-                'success' => false,
-                'message' => $error_message,
-                'error_code' => $error_code,
-                'awb_id' => $awb_id,
-                'type' => 'api_error'
-            );
-        }
 
-        // Check if we have PCL numbers
-        if (!empty($response['pcl']) && is_array($response['pcl'])) {
-            $awb_number = implode(', ', $response['pcl']);
-            update_post_meta($order_id, '_optimus_awb_number', $awb_number);
-            $order->update_meta_data('_optimus_awb_number', $awb_number);
-            $order->save_meta_data();
+            // If we get here, remove the lock before returning success
+            delete_transient($lock_key);
+
+            // Check if we have PCL numbers
+            if (!empty($response['pcl']) && is_array($response['pcl'])) {
+                $awb_number = implode(', ', $response['pcl']);
+                update_post_meta($order_id, '_optimus_awb_number', $awb_number);
+                $order->update_meta_data('_optimus_awb_number', $awb_number);
+                $order->save_meta_data();
+                
+                // Send email notification
+                $this->send_awb_notification_email($order, $awb_number);
+
+                // Add auto-complete check here
+                $this->maybe_complete_order($order);
+
+                if (!isset($_POST['bulk_action'])) {
+                    wp_send_json_success(array('awb_number' => $awb_number));
+                }
+                return array('success' => true, 'awb_number' => $awb_number);
+            } else {
+                $error_message = 'No AWB number received from API';
+                if (!isset($_POST['bulk_action'])) {
+                    wp_send_json_error($error_message);
+                }
+                return array('success' => false, 'message' => $error_message);
+            }
+        } catch (Exception $e) {
+            // Make sure to remove the lock if anything fails
+            delete_transient($lock_key);
             
-            // Send email notification
-            $this->send_awb_notification_email($order, $awb_number);
-
-            // Add auto-complete check here
-            $this->maybe_complete_order($order);
-
             if (!isset($_POST['bulk_action'])) {
-                wp_send_json_success(array('awb_number' => $awb_number));
+                wp_send_json_error($e->getMessage());
             }
-            return array('success' => true, 'awb_number' => $awb_number);
-        } else {
-            $error_message = 'No AWB number received from API';
-            if (!isset($_POST['bulk_action'])) {
-                wp_send_json_error($error_message);
-            }
-            return array('success' => false, 'message' => $error_message);
+            return array('success' => false, 'message' => $e->getMessage());
         }
+
+        // Remove the lock before returning error
+        delete_transient($lock_key);
+        
+        $error_message = 'No AWB number received from API';
+        if (!isset($_POST['bulk_action'])) {
+            wp_send_json_error($error_message);
+        }
+        return array('success' => false, 'message' => $error_message);
     }
 
     /**
@@ -346,9 +389,15 @@ class Optimus_Courier_WooCommerce {
                 try {
                     $result = $this->generate_awb_ajax();
                     if ($result['success']) {
-                        $processed++;
-                        // Send email notification for successfully generated AWBs
-                        $this->send_awb_notification_email($order, $result['awb_number']);
+                        if (!empty($result['skipped'])) {
+                            $skipped++;
+                        } else {
+                            $processed++;
+                            $this->send_awb_notification_email($order, $result['awb_number']);
+                        }
+                        // $processed++;
+                        // // Send email notification for successfully generated AWBs
+                        // $this->send_awb_notification_email($order, $result['awb_number']);
                     } else {
                         $failed++;
                         $failed_orders[] = $order_id;
