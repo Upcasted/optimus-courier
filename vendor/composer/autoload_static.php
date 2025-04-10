@@ -4,41 +4,188 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2883154a157b8b380a7600f35cdec472
+class ComposerStaticInit2f05e066a8ccde459b72cb2f9cfb97c6
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
+        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
-        's' => 
-        array (
-            'setasign\\Fpdi\\' => 14,
-        ),
         'U' => 
         array (
             'Upcasted\\OptimusCourier\\' => 24,
         ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Php73\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
+            'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Contracts\\Service\\' => 26,
+            'Symfony\\Component\\String\\' => 25,
+            'Symfony\\Component\\Finder\\' => 25,
+            'Symfony\\Component\\Console\\' => 26,
+        ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
+        'O' => 
+        array (
+            'OptimusCourier\\Dependencies\\' => 28,
+        ),
+        'L' => 
+        array (
+            'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\' => 17,
+        ),
+        'C' => 
+        array (
+            'CoenJacobs\\Mozart\\' => 18,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'setasign\\Fpdi\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
-        ),
         'Upcasted\\OptimusCourier\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Php73\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
+        ),
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Contracts\\Service\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
+        ),
+        'Symfony\\Component\\String\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/string',
+        ),
+        'Symfony\\Component\\Finder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Symfony\\Component\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'OptimusCourier\\Dependencies\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Dependencies',
+        ),
+        'League\\MimeTypeDetection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
+        ),
+        'League\\Flysystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'CoenJacobs\\Mozart\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/coenjacobs/mozart/src',
+        ),
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
+        'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
+        'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\FpdfTpl' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/FpdfTpl.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\FpdfTplTrait' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/FpdfTplTrait.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\Fpdi' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/Fpdi.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\FpdiException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/FpdiException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\FpdiTrait' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/FpdiTrait.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\AbstractReader' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/AbstractReader.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\CrossReference' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/CrossReference.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\CrossReferenceException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/CrossReferenceException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\FixedReader' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/FixedReader.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\LineReader' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/LineReader.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\CrossReference\\ReaderInterface' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/CrossReference/ReaderInterface.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\Ascii85' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/Ascii85.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\Ascii85Exception' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/Ascii85Exception.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\AsciiHex' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/AsciiHex.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\FilterException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/FilterException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\FilterInterface' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/FilterInterface.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\Flate' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/Flate.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\FlateException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/FlateException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\Lzw' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/Lzw.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Filter\\LzwException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Filter/LzwException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\PdfParser' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/PdfParser.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\PdfParserException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/PdfParserException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\StreamReader' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/StreamReader.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Tokenizer' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Tokenizer.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfArray' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfArray.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfBoolean' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfBoolean.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfDictionary' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfDictionary.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfHexString' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfHexString.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfIndirectObject' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfIndirectObject.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfIndirectObjectReference' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfIndirectObjectReference.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfName' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfName.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfNull' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfNull.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfNumeric' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfNumeric.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfStream' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfStream.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfString' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfString.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfToken' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfToken.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfType' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfType.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfParser\\Type\\PdfTypeException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfParser/Type/PdfTypeException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfReader\\DataStructure\\Rectangle' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfReader/DataStructure/Rectangle.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfReader\\Page' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfReader/Page.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfReader\\PageBoundaries' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfReader/PageBoundaries.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfReader\\PdfReader' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfReader/PdfReader.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\PdfReader\\PdfReaderException' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/PdfReader/PdfReaderException.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\TcpdfFpdi' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/TcpdfFpdi.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\Tcpdf\\Fpdi' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/Tcpdf/Fpdi.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\Tfpdf\\FpdfTpl' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/Tfpdf/FpdfTpl.php',
+        'OptimusCourier\\Dependencies\\setasign\\Fpdi\\Tfpdf\\Fpdi' => __DIR__ . '/../..' . '/src/Dependencies/setasign/Fpdi/Tfpdf/Fpdi.php',
+        'OptimusCourier_FPDF' => __DIR__ . '/../..' . '/src/Dependencies/setasign/fpdf/fpdf.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2883154a157b8b380a7600f35cdec472::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2883154a157b8b380a7600f35cdec472::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit2883154a157b8b380a7600f35cdec472::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2f05e066a8ccde459b72cb2f9cfb97c6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2f05e066a8ccde459b72cb2f9cfb97c6::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2f05e066a8ccde459b72cb2f9cfb97c6::$classMap;
 
         }, null, ClassLoader::class);
     }

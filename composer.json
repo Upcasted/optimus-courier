@@ -1,13 +1,41 @@
 {
     "name": "upcasted/optimus-courier",
     "require": {
-        "setasign/fpdf": "1.8.*",
-        "setasign/fpdi": "^2.5"
+        "php": "~8.0.0",
+        "setasign/fpdf": "1.8.2",
+        "setasign/fpdi": "2.3.6",
+        "coenjacobs/mozart": "^0.7.1"
     },
     "autoload": {
         "psr-4": {
-            "Upcasted\\OptimusCourier\\": "src/"
+            "Upcasted\\OptimusCourier\\": "src/",
+            "OptimusCourier\\Dependencies\\": "src/Dependencies/"
+        },
+        "classmap": [
+            "src/Dependencies"
+        ]
+    },
+    "extra": {
+        "mozart": {
+            "dep_namespace": "OptimusCourier\\Dependencies\\",
+            "dep_directory": "/src/Dependencies/",
+            "classmap_directory": "/src/Dependencies/",
+            "classmap_prefix": "OptimusCourier_",
+            "packages": [
+                "setasign/fpdf",
+                "setasign/fpdi"
+            ]
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "\"vendor/bin/mozart\" compose",
+            "composer dump-autoload"
+        ],
+        "post-update-cmd": [
+            "\"vendor/bin/mozart\" compose",
+            "composer dump-autoload"
+        ]
     },
     "authors": [
         {

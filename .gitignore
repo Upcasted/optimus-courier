@@ -1,0 +1,5 @@
+# Ignore Composer dependencies
+/vendor/
+
+# But keep Mozart-generated files
+!/src/Dependencies/

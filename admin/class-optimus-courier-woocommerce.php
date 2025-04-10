@@ -1,6 +1,6 @@
 <?php
 
-use setasign\Fpdi\Fpdi;
+use OptimusCourier\Dependencies\setasign\Fpdi\Fpdi;
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 
 class Optimus_Courier_WooCommerce {
@@ -424,7 +424,9 @@ class Optimus_Courier_WooCommerce {
 
         if ($action === 'download_merged_awb') {
             $awb_numbers = array();
-            //error_log(implode(',', $ids));
+            // Sort the IDs in ascending order
+            sort($ids);
+
             foreach ($ids as $order_id) {
                 $order = wc_get_order($order_id);
                 if ($order) {
