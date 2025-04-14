@@ -198,7 +198,7 @@ class Optimus_Courier_WooCommerce {
             $awb_data = array(
                 'destinatar_nume' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
                 'destinatar_contact' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
-                'destinatar_adresa' => $order->get_shipping_address_1(),
+                'destinatar_adresa' => $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(),
                 'destinatar_localitate' => $order->get_shipping_city(),
                 'destinatar_judet' => $order->get_shipping_state(),
                 'destinatar_cod_postal' => $order->get_shipping_postcode(),
@@ -858,7 +858,7 @@ class Optimus_Courier_WooCommerce {
             echo '<input type="text" name="destinatar_nume" value="' . esc_attr($order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name()) . '" class="widefat"></p>';
 
             echo '<p><label>' . esc_html__('Adresă Destinatar:', 'optimus-courier') . '</label>';
-            echo '<input type="text" name="destinatar_adresa" value="' . esc_attr($order->get_shipping_address_1()) . '" class="widefat"></p>';
+            echo '<input type="text" name="destinatar_adresa" value="' . esc_attr($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2()) . '" class="widefat"></p>';
 
             echo '<p><label>' . esc_html__('Oraș:', 'optimus-courier') . '</label>';
             echo '<input type="text" name="destinatar_localitate" value="' . esc_attr($order->get_shipping_city()) . '" class="widefat"></p>';
