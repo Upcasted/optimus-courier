@@ -825,7 +825,7 @@ class Optimus_Courier_WooCommerce {
         $awb_number = $order->get_meta('_optimus_awb_number');
         $settings = get_option('optimus_courier_settings', []);
         $default_weight = $settings['optimus_courier_greutate'] ?? 1.00;
-        $default_parcels = $settings['optimus_courier_nr_colete'] ?? 1;
+        $default_parcels = apply_filters('optimus_courier_colet_buc', $settings['optimus_courier_nr_colete'] ?? 1, $order);
 
         if (!empty($awb_number)) {
             // Display AWB numbers with tracking links
