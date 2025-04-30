@@ -60,7 +60,7 @@ class Optimus_Courier_Admin {
             'optimus-courier-settings',
             [ $this, 'render_settings_page' ],
             'dashicons-admin-generic',
-            20
+            100
         );
     }
 

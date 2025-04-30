@@ -167,6 +167,7 @@
                 destinatar_telefon: container.find('input[name="destinatar_telefon"]').val(),
                 destinatar_email: container.find('input[name="destinatar_email"]').val(),
                 colet_greutate: container.find('input[name="colet_greutate"]').val(),
+                ramburs_valoare: container.find('input[name="ramburs_valoare"]').val(),
                 colet_buc: container.find('input[name="colet_buc"]').val(),
             };
 

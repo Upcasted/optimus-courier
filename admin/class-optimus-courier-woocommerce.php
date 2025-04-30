@@ -194,6 +194,14 @@ class Optimus_Courier_WooCommerce {
             // Use 1kg as minimum weight if no weight is set
             $total_weight = max(1.00, $total_weight);
 
+            // Check if order has COD
+            $has_cod = false;
+            $cod_amount = 0;
+            if ($order->get_payment_method() === 'cod' || $order->get_payment_method() === 'ramburs') {
+                $has_cod = true;
+                $cod_amount = $order->get_total();
+            }
+
             // Prepare AWB data from order
             $awb_data = array(
                 'destinatar_nume' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
@@ -212,7 +220,7 @@ class Optimus_Courier_WooCommerce {
                 'colet_greutate' => $total_weight > 1.00 ? $total_weight : (float) (get_option('optimus_courier_settings')['optimus_courier_greutate'] ?? 1.00),
                 'data_colectare' => gmdate('Y-m-d'),
                 'ref_factura' => $order->get_order_number(),
-                //'ramburs_valoare' => $order->get_total()
+                'ramburs_valoare' => $has_cod ? $cod_amount : 0
             );
 
             // Create AWB using class's API instance
@@ -892,6 +900,13 @@ class Optimus_Courier_WooCommerce {
             echo '<p><label>' . esc_html__('Număr Colete:', 'optimus-courier') . '</label>';
             echo '<input type="number" name="colet_buc" value="' . esc_attr($default_parcels) . '" class="widefat"></p>';
 
+            // Add COD field before the generate button
+            $has_cod = $order->get_payment_method() === 'cod' || $order->get_payment_method() === 'ramburs';
+            $cod_amount = $has_cod ? $order->get_total() : 0;
+            
+            echo '<p><label>' . esc_html__('Valoare Ramburs:', 'optimus-courier') . '</label>';
+            echo '<input type="number" step="0.01" name="ramburs_valoare" value="' . esc_attr($cod_amount) . '" class="widefat"></p>';
+
             echo '<button type="button" class="button button-primary" id="generate-awb-button">' . esc_html__('Generează AWB', 'optimus-courier') . '</button>';
             echo '</div>';
         }
@@ -965,6 +980,7 @@ class Optimus_Courier_WooCommerce {
             'destinatar_email' => sanitize_email(wp_unslash($_POST['destinatar_email'])),
             'colet_greutate' => (float) filter_var(wp_unslash($_POST['colet_greutate']), FILTER_VALIDATE_FLOAT) ?: 0.0,
             'colet_buc' => (int) filter_var(wp_unslash($_POST['colet_buc']), FILTER_VALIDATE_INT) ?: 0,
+            'ramburs_valoare' => (float) filter_var(wp_unslash($_POST['ramburs_valoare'] ?? 0), FILTER_VALIDATE_FLOAT) ?: 0,
             'data_colectare' => gmdate('Y-m-d'),
             'ref_factura' => $order->get_order_number(),
         );
