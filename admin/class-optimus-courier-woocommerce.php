@@ -208,7 +208,10 @@ class Optimus_Courier_WooCommerce {
                 'destinatar_contact' => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
                 'destinatar_adresa' => $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(),
                 'destinatar_localitate' => $order->get_shipping_city(),
-                'destinatar_judet' => $order->get_shipping_state(),
+                //'destinatar_judet' => $order->get_shipping_state(),
+                'destinatar_judet' => isset(WC()->countries->get_states($order->get_shipping_country())[$order->get_shipping_state()]) 
+                                        ? WC()->countries->get_states($order->get_shipping_country())[$order->get_shipping_state()] 
+                                        : $order->get_shipping_state(),
                 'destinatar_cod_postal' => $order->get_shipping_postcode(),
                 'destinatar_telefon' => $order->get_shipping_phone() ?: $order->get_billing_phone(),
                 'destinatar_email' => $order->get_billing_email(),
