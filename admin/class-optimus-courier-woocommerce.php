@@ -368,6 +368,7 @@ class Optimus_Courier_WooCommerce {
         $bulk_actions['generate_awb'] = esc_html__('Generează AWB', 'optimus-courier');
         $bulk_actions['download_merged_awb'] = esc_html__('Descarcă AWB-uri într-un singur fișier PDF', 'optimus-courier');
         $bulk_actions['download_awb_zip'] = esc_html__('Descarcă AWB-uri în fișiere individuale', 'optimus-courier');
+        $bulk_actions['delete_awb'] = esc_html__('Sterge awb-uri', 'optimus-courier');
         return $bulk_actions;
     }
 
@@ -487,6 +488,54 @@ class Optimus_Courier_WooCommerce {
             }
 
             return $redirect_to;
+        }
+
+        if ($action === 'delete_awb') {
+            $processed = 0;
+            $failed = 0;
+            $skipped = 0;
+            $failed_orders = array();
+            $error_messages = array();
+
+            foreach ($ids as $order_id) {
+                $order = wc_get_order($order_id);
+                if (!$order) {
+                    $failed++;
+                    $failed_orders[] = $order_id;
+                    $error_messages[$order_id] = 'Order not found';
+                    continue;
+                }
+
+                $existing_awb = $order->get_meta('_optimus_awb_number');
+                if (empty($existing_awb)) {
+                    $skipped++;
+                    continue;
+                }
+
+                try {
+                    // Delete AWB from order meta
+                    $order->delete_meta_data('_optimus_awb_number');
+                    $order->save_meta_data();
+                    delete_post_meta($order_id, '_optimus_awb_number');
+
+                    $processed++;
+                } catch (Exception $e) {
+                    $failed++;
+                    $failed_orders[] = $order_id;
+                    $error_messages[$order_id] = $e->getMessage();
+                    $this->log_debug('Optimus Courier AWB deletion failed for order ' . $order_id . ': ' . $e->getMessage());
+                }
+            }
+
+            $redirect_to = remove_query_arg(['processed_count', 'failed_count', 'skipped_count', 'failed_orders', 'error_messages', 'bulk_action_done'], wp_get_referer());
+            return add_query_arg(array(
+                'processed_count' => $processed,
+                'failed_count' => $failed,
+                'skipped_count' => $skipped,
+                'failed_orders' => implode(',', $failed_orders),
+                'error_messages' => base64_encode(json_encode($error_messages)),
+                'bulk_action_done' => 'delete_awb'
+            ), $redirect_to);
         }
 
         return $redirect_to;
