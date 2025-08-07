@@ -3,8 +3,8 @@ Contributors: upcasted
 Donate link: https://upcasted.com/
 Tags: shipping, courier, delivery, tracking, optimus
 Requires at least: 6.3
-Tested up to: 6.7
-Stable tag: 1.0.0
+Tested up to: 6.8
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ You can obtain API credentials by contacting Optimus Courier support team.
 4. Tracking Information Display
 
 == Changelog ==
+
+= 1.0.1 =
+* Am adaugat posibilitatea de stergere AWB in bulk
 
 = 1.0.0 =
 * Initial release
