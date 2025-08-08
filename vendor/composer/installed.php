@@ -3,11 +3,11 @@
         'name' => 'upcasted/optimus-courier',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '86e5e22e320a4928d6c6e0a281a58be9ed945a13',
+        'reference' => 'b9b5e65eadb184aa21b1c288f57a195d71c031d5',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         'coenjacobs/mozart' => array(
@@ -172,7 +172,7 @@
         'upcasted/optimus-courier' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '86e5e22e320a4928d6c6e0a281a58be9ed945a13',
+            'reference' => 'b9b5e65eadb184aa21b1c288f57a195d71c031d5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

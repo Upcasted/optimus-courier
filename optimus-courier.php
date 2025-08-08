@@ -16,7 +16,7 @@
  * Plugin Name:       Optimus Courier
  * Plugin URI:        https://optimuscourier.ro
  * Description:       Plugin WordPress pentru integrarea Optimus Courier cu WooCommerce: expedieri automate, tracking și actualizare status comenzi.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Upcasted
  * Author URI:        https://upcasted.com/
  * License:           GPL-2.0+
@@ -33,7 +33,37 @@ if (!defined('WPINC')) {
 
 // Load Composer's autoloader
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
+    try {
+        require_once __DIR__ . '/vendor/autoload.php';
+    } catch (Exception $e) {
+        // Log error and deactivate plugin if autoloader fails
+        if (function_exists('error_log')) {
+            error_log('Optimus Courier: Autoloader failed - ' . $e->getMessage());
+        }
+        
+        // Display admin notice instead of causing fatal error
+        if (is_admin()) {
+            add_action('admin_notices', function() use ($e) {
+                echo '<div class="notice notice-error"><p>';
+                echo '<strong>Optimus Courier Plugin Error:</strong> ';
+                echo 'Failed to load required dependencies. Please reinstall the plugin or contact support. ';
+                echo 'Error: ' . esc_html($e->getMessage());
+                echo '</p></div>';
+            });
+        }
+        return;
+    }
+} else {
+    // Vendor directory doesn't exist
+    if (is_admin()) {
+        add_action('admin_notices', function() {
+            echo '<div class="notice notice-error"><p>';
+            echo '<strong>Optimus Courier Plugin Error:</strong> ';
+            echo 'Required dependencies are missing. Please reinstall the plugin completely or run "composer install" in the plugin directory.';
+            echo '</p></div>';
+        });
+    }
+    return;
 }
 
 /**
@@ -41,7 +71,7 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'OPTIMUS_COURIER_VERSION', '1.0.0' );
+define( 'OPTIMUS_COURIER_VERSION', '1.0.1' );
 
 /**
  * Define the default tracking URL for the plugin
@@ -85,9 +115,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-optimus-courier.php';
  * @since    1.0.0
  */
 function run_optimus_courier() {
+	// Only run if dependencies are loaded
+	if (!class_exists('OptimusCourier\\Dependencies\\setasign\\Fpdi\\Fpdi')) {
+		return;
+	}
 
 	$plugin = new Optimus_Courier();
 	$plugin->run();
-
 }
 run_optimus_courier();
