@@ -31,35 +31,39 @@ if (!defined('WPINC')) {
     die;
 }
 
-// Load Composer's autoloader
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    try {
-        require_once __DIR__ . '/vendor/autoload.php';
-    } catch (Exception $e) {
-        // Log error and deactivate plugin if autoloader fails
-        if (function_exists('error_log')) {
-            error_log('Optimus Courier: Autoloader failed - ' . $e->getMessage());
+// Create a simple PSR-4 autoloader for our dependencies
+spl_autoload_register(function ($className) {
+    // Map for our namespaces to directories
+    $namespaces = [
+        'OptimusCourier\\Dependencies\\setasign\\' => __DIR__ . '/src/Dependencies/setasign/',
+    ];
+    
+    foreach ($namespaces as $namespace => $baseDir) {
+        $len = strlen($namespace);
+        if (strncmp($namespace, $className, $len) !== 0) {
+            continue;
         }
         
-        // Display admin notice instead of causing fatal error
-        if (is_admin()) {
-            add_action('admin_notices', function() use ($e) {
-                echo '<div class="notice notice-error"><p>';
-                echo '<strong>Optimus Courier Plugin Error:</strong> ';
-                echo 'Failed to load required dependencies. Please reinstall the plugin or contact support. ';
-                echo 'Error: ' . esc_html($e->getMessage());
-                echo '</p></div>';
-            });
+        $relativeClass = substr($className, $len);
+        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+        
+        if (file_exists($file)) {
+            require_once $file;
+            return;
         }
-        return;
     }
+});
+
+// Load the main FPDF class
+$fpdf_file = __DIR__ . '/src/Dependencies/setasign/fpdf/fpdf.php';
+if (file_exists($fpdf_file)) {
+    require_once $fpdf_file;
 } else {
-    // Vendor directory doesn't exist
     if (is_admin()) {
         add_action('admin_notices', function() {
             echo '<div class="notice notice-error"><p>';
             echo '<strong>Optimus Courier Plugin Error:</strong> ';
-            echo 'Required dependencies are missing. Please reinstall the plugin completely or run "composer install" in the plugin directory.';
+            echo 'FPDF library is missing. Please reinstall the plugin completely.';
             echo '</p></div>';
         });
     }
@@ -117,6 +121,14 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-optimus-courier.php';
 function run_optimus_courier() {
 	// Only run if dependencies are loaded
 	if (!class_exists('OptimusCourier\\Dependencies\\setasign\\Fpdi\\Fpdi')) {
+		if (is_admin()) {
+			add_action('admin_notices', function() {
+				echo '<div class="notice notice-error"><p>';
+				echo '<strong>Optimus Courier Plugin Error:</strong> ';
+				echo 'Required FPDI class could not be loaded. Please reinstall the plugin.';
+				echo '</p></div>';
+			});
+		}
 		return;
 	}
 
