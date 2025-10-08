@@ -16,7 +16,7 @@
  * Plugin Name:       Optimus Courier
  * Plugin URI:        https://optimuscourier.ro
  * Description:       Plugin WordPress pentru integrarea Optimus Courier cu WooCommerce: expedieri automate, tracking și actualizare status comenzi.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Upcasted
  * Author URI:        https://upcasted.com/
  * License:           GPL-2.0+
@@ -75,7 +75,7 @@ if (file_exists($fpdf_file)) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'OPTIMUS_COURIER_VERSION', '1.0.1' );
+define( 'OPTIMUS_COURIER_VERSION', '1.0.2' );
 
 /**
  * Define the default tracking URL for the plugin

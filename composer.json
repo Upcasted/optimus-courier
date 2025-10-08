@@ -1,7 +1,12 @@
 {
     "name": "upcasted/optimus-courier",
+    "description": "Optimus Courier WooCommerce integration",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0+",
     "require": {
-        "php": "~8.0.0",
+        "php": ">=8.0"
+    },
+    "require-dev": {
         "setasign/fpdf": "1.8.2",
         "setasign/fpdi": "2.3.6",
         "coenjacobs/mozart": "^0.7.1"
@@ -28,13 +33,22 @@
         }
     },
     "scripts": {
+        "fix-perms": [
+            "chmod +x vendor/bin/mozart || true"
+        ],
+        "generate-deps": [
+            "@fix-perms",
+            "php vendor/bin/mozart compose"
+        ],
         "post-install-cmd": [
-            "\"vendor/bin/mozart\" compose",
-            "composer dump-autoload"
+            "@generate-deps"
         ],
         "post-update-cmd": [
-            "\"vendor/bin/mozart\" compose",
-            "composer dump-autoload"
+            "@generate-deps"
+        ],
+        "build": [
+            "composer install --no-dev --optimize-autoloader",
+            "@generate-deps"
         ]
     },
     "authors": [
