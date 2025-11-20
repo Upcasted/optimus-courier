@@ -1,22 +1,11 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link              https://upcasted.com
- * @since             1.0.0
- * @package           Optimus_Courier
- *
  * @wordpress-plugin
  * Plugin Name:       Optimus Courier
  * Plugin URI:        https://optimuscourier.ro
  * Description:       Plugin WordPress pentru integrarea Optimus Courier cu WooCommerce: expedieri automate, tracking și actualizare status comenzi.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Upcasted
  * Author URI:        https://upcasted.com/
  * License:           GPL-2.0+
@@ -75,7 +64,7 @@ if (file_exists($fpdf_file)) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'OPTIMUS_COURIER_VERSION', '1.0.1' );
+define( 'OPTIMUS_COURIER_VERSION', '1.0.2' );
 
 /**
  * Define the default tracking URL for the plugin
