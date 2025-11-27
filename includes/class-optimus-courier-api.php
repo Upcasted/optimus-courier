@@ -80,6 +80,7 @@ class Optimus_Courier_API {
 
         $response = wp_remote_post( $url, [
             'body' => $data,
+            'timeout' => 600, // 10 minutes timeout
         ] );
 
         if ( is_wp_error( $response ) ) {
